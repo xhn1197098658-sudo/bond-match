@@ -1,0 +1,5 @@
+# 文本文件统一使用 LF，避免 CRLF/LF 混用导致无意义 diff
+* text=auto eol=lf
+
+# Windows 批处理保留 CRLF
+*.bat text eol=crlf
