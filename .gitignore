@@ -172,3 +172,10 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# 本地数据库（导入后生成，不提交）
+database/*.db
+
+# 打包输出、本地数据
+BondBuyerMatch_Portable/
+data/

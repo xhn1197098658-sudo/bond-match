@@ -43,6 +43,15 @@ CREATE TABLE funds (
     FOREIGN KEY (company_id) REFERENCES buyside_companies(company_id)
 );
 
+-- Import batches: track source file for each import (for batch delete)
+CREATE TABLE import_batches (
+    batch_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    filename TEXT NOT NULL,
+    data_type TEXT NOT NULL,
+    row_count INTEGER DEFAULT 0,
+    imported_at TEXT DEFAULT (datetime('now','localtime'))
+);
+
 -- Contacts table: Employee contact information
 CREATE TABLE contacts (
     contact_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -58,6 +67,7 @@ CREATE TABLE contacts (
     mobil TEXT,
     is_primary BOOLEAN DEFAULT 0,
     additional_info TEXT,
+    batch_id INTEGER REFERENCES import_batches(batch_id),
     FOREIGN KEY (company_id) REFERENCES buyside_companies(company_id),
     FOREIGN KEY (fund_id) REFERENCES funds(fund_id)
 );
@@ -70,6 +80,7 @@ CREATE TABLE holdings (
     bond_id INTEGER NOT NULL,
     amount REAL,
     purchase_date DATE,
+    batch_id INTEGER REFERENCES import_batches(batch_id),
     FOREIGN KEY (company_id) REFERENCES buyside_companies(company_id),
     FOREIGN KEY (fund_id) REFERENCES funds(fund_id),
     FOREIGN KEY (bond_id) REFERENCES bonds(bond_id)
@@ -82,6 +93,7 @@ CREATE TABLE can_buy_lists (
     issuer_id INTEGER NOT NULL,
     date_added DATE DEFAULT CURRENT_DATE,
     additional_criteria TEXT,
+    batch_id INTEGER REFERENCES import_batches(batch_id),
     FOREIGN KEY (company_id) REFERENCES buyside_companies(company_id),
     FOREIGN KEY (issuer_id) REFERENCES issuers(issuer_id)
 );

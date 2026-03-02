@@ -12,7 +12,9 @@ def get_data_api(settings=None, **kwargs):
     返回对象：connect(), disconnect(), get_bond_info(code), get_issuer_info(name)
     """
     from ifind_api import iFindAPI
-    username = kwargs.get("ifind_user") or (settings.value("iFind/username", "") if settings else "") or os.environ.get("IFIND_USER", "")
-    password = kwargs.get("ifind_password") or (settings.value("iFind/password", "") if settings else "") or os.environ.get("IFIND_PASSWORD", "")
+    def _str(v):
+        return (v or "").strip() if v is not None else ""
+    username = _str(kwargs.get("ifind_user")) or _str(settings.value("iFind/username", "") if settings else None) or os.environ.get("IFIND_USER", "")
+    password = _str(kwargs.get("ifind_password")) or _str(settings.value("iFind/password", "") if settings else None) or os.environ.get("IFIND_PASSWORD", "")
     path = kwargs.get("ifind_path") or (settings.value("iFind/path", "") if settings else "")
     return iFindAPI(username=username, password=password, ifind_path=path)

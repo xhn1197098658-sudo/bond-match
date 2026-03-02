@@ -69,9 +69,9 @@ def main():
     if input("确认导入? (y/n): ").strip().lower() != 'y':
         print("已取消")
         return False
-    ok = db.import_from_excel(holdings_file, can_buy_file, contacts_file)
+    ok, counts = db.import_from_excel(holdings_file, can_buy_file, contacts_file)
     if ok:
-        print("导入完成")
+        print("导入完成:", counts)
     else:
         print("导入失败")
     return ok
